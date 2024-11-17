@@ -4,7 +4,7 @@ var ejs = require('ejs')
 var mysql = require('mysql')
 
 const app = express()
-const port = 8000
+const port = 8003
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: true}))
@@ -26,11 +26,11 @@ db.connect((err)=> {
 })
 global.db = db
 
-app.locals.moviesData = {moviesName:"Watchlist"}
+//app.locals.moviesData = {moviesName:"Watchlist"}//
 
 const mainRoutes = require("./routes/main")
 app.use('/' , mainRoutes)
 
 // add route handles for origanal pages here
 
-app.listen(port, () => console.log('Node app listening on port ${port}!'))
+app.listen(port, () => console.log(`Node app listening on port ${port}!`))
