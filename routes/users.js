@@ -3,12 +3,15 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const saltRounds = 10 // defines salt rounds
 
+
+
 router.get("/register" , function (req, res, next){
     res.render('register.ejs')
 })
 router.get("/login" , function (req, res, next){
     res.render('login.ejs')
 })
+
 
 router.post('/registered', function (req, res, next){
     const plainPassword = req.body.plainPassword;
@@ -38,6 +41,7 @@ router.post('/registered', function (req, res, next){
 });
 });
 router.post('/loggedin', function (req, res, next){
+    console.log(req.body);
     const plainPassword = req.body.plainPassword;
     const username = req.body.username;
 
@@ -49,7 +53,7 @@ db.query(sqlquery, [username], (err, result) => {
     
 
 if (result.length === 0) {
-    return res.render('login', {message:'login failed username not found'});
+    return res.send('login', {message:'login failed username not found'});
 }
 const hashedPassword = result[0].hashedPassword;
 
@@ -59,13 +63,25 @@ bcrypt.compare(plainPassword, hashedPassword, function(err, isMatch){
         
     }
     if(isMatch){
-        res.render('login',{message: 'login successfull'});
+        req.session.userId = req.body.username;
+        return res.render('watchlist')
+   
 
     }else{
-        res.render('login', {message: ' login failed: incorrect password '});
+        res.send( 'login failed: incorrect password ')
     }
    });
 });
 });
+
+router.get('/logout', redirectLogin, (req,res) => {
+    req.session.destroy(err => {
+    if (err) {
+      return res.redirect('./')
+    }
+    res.send('you are now logged out. <a href='+'./'+'>Home</a>');
+    })
+})
+
 
 module.exports = router
