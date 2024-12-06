@@ -5,12 +5,14 @@
         <title>Register</title>
         <body>  <h1>Register for </h1>
             <form method="POST" action="registered">
-                <p>First name: <input id="first" type="text" name="first" /></p>
-                <p>Last name: <input id="last" type="text" name="last" /></p>
-                <p>Email: <input id="email" type="text" name="email" /></p>
-                <p>password: <input id="password" type="text" name="plainPassword" /></p>
-                <p>username: <input id="username" type="text" name="username" /></p>
+                <p>First name: <input id="first" type="text" name="first" required /></p>
+                <p>Last name: <input id="last" type="text" name="last" required /></p>
+                <p>Email: <input id="email" type="text" name="email" required /></p>
+                <p>password: <input id="password" type="text" name="plainPassword" required /></p>
+                <p>username: <input id="username" type="text" name="username" required  /></p>
+
                 <input type="submit" value="Register" />
+
             </form>
         </body>
         </html>

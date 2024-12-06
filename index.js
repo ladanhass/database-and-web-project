@@ -1,20 +1,17 @@
 var express = require('express')
 var ejs = require('ejs')
 var session = require ('express-session');
-
-
+var validator = require ('express-validator');
 var mysql = require('mysql')
+const expressSanitizer = require('express-sanitizer');
 
 const app = express()
-const port = 8021
-
-
+const port = 8045
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: true}))
-
-
 app.use(express.static(__dirname + '/public'))
+app.use(expressSanitizer());
 // Create a session
 app.use(session({
     secret: 'somerandomstuff',
@@ -24,15 +21,6 @@ app.use(session({
         expires: 600000
     }
 }))
-const redirectLogin = (req, res, next) => {
-    if (!req.session.userId ) {
-      res.redirect('./login') // redirect to the login page
-    } else { 
-        next (); // move to the next middleware function
-    } 
-}
-
-
 const db = mysql.createConnection ({
     host: 'localhost',
     user:'root' ,
@@ -54,12 +42,14 @@ const mainRoutes = require("./routes/main")
 app.use('/' , mainRoutes)
 const usersRoutes = require('./routes/users')
 app.use('/users', usersRoutes)
+
+
 // add route handles for origanal pages here
 
 
-app.get('/watchlist', redirectLogin, function (req, res) {
-    res.render('watchlist');
-});
+//app.get('/watchlist', redirectLogin, function (req, res) {
+   // res.render('watchlist');
+//});
 
 
 
