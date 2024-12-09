@@ -5,8 +5,9 @@ var validator = require ('express-validator');
 var mysql = require('mysql');
 const expressSanitizer = require('express-sanitizer');
 
+
 const app = express()
-const port = 8053
+const port = 8068
 
 
 app.set('view engine', 'ejs')
@@ -43,8 +44,8 @@ const mainRoutes = require("./routes/main")
 app.use('/' , mainRoutes)
 const usersRoutes = require('./routes/users')
 app.use('/users', usersRoutes)
-//const watchlistRoutes = require('./routes/watchlist')
-//app.use('/watchlist', watchlistRoutes)
+const watchlistRoutes = require("./routes/watchlist")
+app.use('/watchlist', watchlistRoutes)
 
 
 // add route handles for origanal pages here

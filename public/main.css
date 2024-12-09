@@ -21,3 +21,15 @@ a:hover{
     text-decoration: none;
 
 }
+.bg-page{
+    background-color: rgb(236, 244, 247);
+}
+.bg-login{
+    background-color: rgb(236, 244, 247);
+}
+.about-p{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    
+
+}

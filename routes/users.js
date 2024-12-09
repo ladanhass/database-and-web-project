@@ -31,8 +31,6 @@ router.post('/registered',
  .isLength({min:5})
  .withMessage('username must be atleate 5 characters long')
 
-
-
 ],
     function (req, res){
         const errors = validationResult(req);
