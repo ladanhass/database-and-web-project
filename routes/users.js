@@ -12,10 +12,10 @@ const redirectLogin = (req, res, next) => {
     } 
 };
 router.get("/register" , function (req, res, next){
-    res.render('register.ejs')
+    res.render('register.ejs', {alert: []});
 });
 router.get("/login" , function (req, res, next){
-    res.render('login.ejs')
+    res.render('login.ejs', {alert: []})
 });
 router.post('/registered',
 [
@@ -39,7 +39,7 @@ router.post('/registered',
 
         if (!errors.isEmpty()) {
             
-            res.redirect('./register');
+            return res.render('./register', {alert: errors.array()});
          }
     
         const plainPassword = req.body.plainPassword;
@@ -71,17 +71,23 @@ router.post('/loggedin', function (req, res, next){
     console.log(req.body);
     const plainPassword = req.body.plainPassword;
     const username = req.sanitize(req.body.username);
+    const email = req.sanitize(req.body.email);
 
-let sqlquery = 'SELECT * FROM users WHERE username = ?';
-db.query(sqlquery, [username], (err, result) => {
+let sqlquery = 'SELECT * FROM users WHERE email = ?';
+db.query(sqlquery, [email], (err, result) => {
     if(err){
         return next(err);
     }
     
 
 if (result.length === 0) {
-    return res.send('login', {message:'login failed username not found'});
+    return res.render('login', {alert: [{msg:'Email not found please register !'}]});
 }
+
+if (result[0].username !== username) {
+    return res.render('login', {alert: [{msg:'Username does not match email'}]});
+}
+
 const hashedPassword = result[0].hashedPassword;
 
 bcrypt.compare(plainPassword, hashedPassword, function(err, isMatch){
@@ -95,13 +101,14 @@ bcrypt.compare(plainPassword, hashedPassword, function(err, isMatch){
    
 
     }else{
-        res.send( 'login failed: incorrect password ')
+        return res.render('login', {alert: [{msg:'login failed incorrect password'}]});
     }
    });
 });
+
 });
 
-router.get('/logout', redirectLogin, (req,res) => {
+router.post('/logout', redirectLogin, (req,res) => {
     req.session.destroy(err => {
     if (err) {
       return res.redirect('./')

@@ -1,12 +1,13 @@
-var express = require('express')
-var ejs = require('ejs')
+var express = require('express');
+var ejs = require('ejs');
 var session = require ('express-session');
 var validator = require ('express-validator');
-var mysql = require('mysql')
+var mysql = require('mysql');
 const expressSanitizer = require('express-sanitizer');
 
 const app = express()
-const port = 8045
+const port = 8053
+
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: true}))
@@ -23,9 +24,9 @@ app.use(session({
 }))
 const db = mysql.createConnection ({
     host: 'localhost',
-    user:'root' ,
+    user:'database_app' ,
     database: 'database_coursework',
-    password: 'root1234'
+    password: 'myPassword'
 
 })
 db.connect((err)=> {
@@ -42,6 +43,8 @@ const mainRoutes = require("./routes/main")
 app.use('/' , mainRoutes)
 const usersRoutes = require('./routes/users')
 app.use('/users', usersRoutes)
+//const watchlistRoutes = require('./routes/watchlist')
+//app.use('/watchlist', watchlistRoutes)
 
 
 // add route handles for origanal pages here

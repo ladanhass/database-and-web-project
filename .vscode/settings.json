@@ -13,6 +13,20 @@
             "database": "database_coursework",
             "username": "root",
             "password": "root1234"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "database_app",
+            "database": "database_coursework",
+            "username": "database_app",
+            "password": "myPassword"
         }
     ]
 }
