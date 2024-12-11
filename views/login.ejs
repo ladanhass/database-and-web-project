@@ -1,18 +1,23 @@
+<!-- used this vidoe to help with bootstaps alerts
+https://www.youtube.com/watch?v=z8m_Vy_9FIs-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/main.css" />
+    <!-- bootraps bundle to make user friendly-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Login</title>
 </head>
+<!-- displays error to page using bootstaps allerts  -->
 <body class="bg-login">
     <div class="container mt-5">
         <% if(typeof alert != 'undefined' && alert.length > 0){ %> 
             <% alert.forEach(function(error){ %> 
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <!--shows error message-->
             <%= error.msg %>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -20,8 +25,9 @@
           </div>
        <% }) %>
        <% } %>
-    
+
         <h1>Login</h1>
+        <!--login page form user inputs email username and password-->
         <form method="POST" action="loggedin">
             <div class="mb-3">
                 <label for="email" class="form-lable">Email</label>
@@ -36,6 +42,7 @@
                 </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        <a href="/" class="btn btn-secondary ">Home</a>
     </div>
 </body>
 </html>

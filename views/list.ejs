@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
-    <link rel="stylesheet" type="text/css" href="/main.css" />
+<html lang="en">
   <head>
-    <body>
-        <h1> welcome </h1>
-        <h2> here are the movies avalible in stock and their prices</h2>
-        <ul>
-            <% availableMovies.forEach(function(movie){%>
-            <li><%= movie.name %>, £<%=movie.price %></li>
-        <% }) %>
-        </ul>
-    </body>
-
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <!--headings for page-->
+    <h1>Movie List and Prices</h1>
+    <h2>Movies avalible in stock and their prices</h2>
+    <ul>
+      <!--passes though availableMovies and displays movie name and price-->
+      <% availableMovies.forEach(function(movie){%>
+      <li><%= movie.name %>, £<%=movie.price %></li>
+      <% }) %>
+    </ul>
+  </body>
 </html>

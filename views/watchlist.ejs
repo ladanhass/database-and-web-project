@@ -1,78 +1,116 @@
 <!DOCTYPE html>
 <html>
-    <html>
-        <link rel="stylesheet" type="text/css" href="/main.css" />
-        <title>watchlist</title>
-        <body>  <h1>watchlist </h1>
-            <form  method="POST" action="logout">
-                <button type="submit">Logout</button>
-            </form>
-            <h2> search</h2>
-            <input type="text" id="searchInput" placeholder="search for movies and shows">
-            <button id="searchBtn">Search</button>
-            <ul id="movieList"></ul>
-        <script>
-            document.getElementById('searchInput').addEventListener('input', function(){
-                let inputValue = this.value;
-                this.value = inputValue.replace(/\b\w/g, function(char){
-                    return char.toUpperCase();
-                });
-            });
-             document.getElementById('searchBtn').addEventListener('click', function(){
-                const query = document.getElementById('searchInput').value.trim();
-                if (query){
-                    searchMovies(query);
+  <head>
+    <!--prettier used for layout-->
+    <!-- bootstraps and css-->
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <title>watchlist</title>
+  </head>
+  <!--search form -->
+  <body class="watchlist-page">
+    <div class="container mt-5">
+      <h1>Find out if a movie is among IMDb's most popular!</h1>
+      <form method="POST" action="logout" class="text-center mb-4">
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
+      <h2>Search</h2>
+      <div class="d-flex justify-content-center mb-4">
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control mr-2"
+          placeholder="search for movies"
+        />
+        <button id="searchBtn" class="btn btn-primary">Search</button>
+      </div>
+      <ul id="movieList" class="list-group"></ul>
+    </div>
+    <!-- event listener for search button-->
+    <script>
+      document
+        .getElementById("searchBtn")
+        .addEventListener("click", function () {
+          const query = document.getElementById("searchInput").value.trim();
+          if (query) {
+            searchMovies(query);
+          } else {
+            alert("please search tearm");
+          }
+        });
+      //api to search for movie using data in api
+      async function searchMovies(query) {
+        const url = "https://imdb188.p.rapidapi.com/api/v1/getPopularMovies";
+        const options = {
+          method: "POST",
+          headers: {
+            "x-rapidapi-key":
+              "84e4438590msh8da4c61e4c4dfc0p12317fjsnab820aaad838",
+            "x-rapidapi-host": "imdb188.p.rapidapi.com",
+            "Content-Type": "application/json",
+          },
+        };
+        //fetches data from api
+        try {
+          const response = await fetch(url, options);
 
-                }else{
-                    alert('please search tearm');
-                }
-                
-             });
-            async function searchMovies (query){
-                const url = 'https://imdb188.p.rapidapi.com/api/v1/getPopularMovies';
-const options = {
-	method: 'POST',
-	headers: {
-		'x-rapidapi-key':'e4910182a9mshef09ddac2e6df6dp1df58bjsn930b55edc97c',
-		'x-rapidapi-host': 'imdb188.p.rapidapi.com',
-		'Content-Type': 'application/json'
-	}
-};
-try {
-	const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error(`http status: ${response.status} `);
+          }
+          const result = await response.json();
 
-    if(!response.ok){
-        throw new Error(`http status: ${response.status} `);
-    }
-	const result = await response.json();
-    console.log(result);
-    const movies = result?.data?.list || [];
-    const filteredMovies = movies.filter(movie =>
-    movie.title?.titleText?.text.toLowerCase().includes(query.toLowerCase())
-    );
-    displayMovies(filteredMovies);
-
-    
-    
-
-}catch(error){
-    console.error('error getting data:', error);
-} 
-}
-function displayMovies(movies){
-    const movieList = document.getElementById('movieList');
-    movieList.innerHTML = '';
-    if (movies.length === 0){
-        movieList.innerHTML = '<li> no movies found<li>';
-            return;
-    }
-    movies.forEach(movie => {
-       const li = document.createElement('li');
-        li.textContent = movie.title?.titleText?.text || 'unknown';
-        movieList.appendChild(li);
-    });
-}
-        </script>
-         </body>
-         </html>
-    
+          console.log(result);
+          //get list from response
+          const movies = result?.data?.list || [];
+          const normalizedQuery = normalizeString(query);
+          //filters based on query search
+          const filteredMovies = movies.filter((movie) => {
+            const movieTitle = normalizeString(
+              movie.title?.titleText?.text || ""
+            );
+            return movieTitle.includes(normalizedQuery);
+          });
+          //displays filter results
+          displayMovies(filteredMovies);
+        } catch (error) {
+          console.error("error getting data:", error);
+        }
+      }
+      //normalizes string to make comparison work
+      function normalizeString(str) {
+        if (!str) return "";
+        return str
+          .toLowerCase()
+          .trim()
+          .replace(/[\s\.,;:`"!?\-()]+/g, "");
+      }
+      //clears existing list and displays results
+      //shows message if no movies found
+      function displayMovies(movies) {
+        const movieList = document.getElementById("movieList");
+        movieList.innerHTML = "";
+        if (movies.length === 0) {
+          movieList.innerHTML =
+            "<li>This movie is not in our list of IMDb's most popular movies<li>";
+          return;
+        }
+        //adds each movie to the list
+        movies.forEach((movie) => {
+          const li = document.createElement("li");
+          li.textContent = movie.title?.titleText?.text || "unknown";
+          movieList.appendChild(li);
+        });
+      }
+    </script>
+  </body>
+</html>
