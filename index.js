@@ -4,10 +4,12 @@ var session = require ('express-session');
 var validator = require ('express-validator');
 var mysql = require('mysql');
 const expressSanitizer = require('express-sanitizer');
+require('dotenv').config();
+
 
 
 const app = express()
-const port = 8068
+const port = 8087
 
 
 app.set('view engine', 'ejs')
@@ -44,8 +46,9 @@ const mainRoutes = require("./routes/main")
 app.use('/' , mainRoutes)
 const usersRoutes = require('./routes/users')
 app.use('/users', usersRoutes)
-const watchlistRoutes = require("./routes/watchlist")
-app.use('/watchlist', watchlistRoutes)
+
+const movieRoutes = require('./routes/movie')
+app.use('/movie', movieRoutes)
 
 
 // add route handles for origanal pages here

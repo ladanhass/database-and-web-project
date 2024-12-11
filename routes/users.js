@@ -115,5 +115,4 @@ router.post('/logout', redirectLogin, (req,res) => {
     });
 });
 
-
 module.exports = router;

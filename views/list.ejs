@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  <head>
+    <body>
+        <h1> welcome </h1>
+        <h2> here are the movies avalible in stock and their prices</h2>
+        <ul>
+            <% availableMovies.forEach(function(movie){%>
+            <li><%= movie.name %>, £<%=movie.price %></li>
+        <% }) %>
+        </ul>
+    </body>
+
+</html>

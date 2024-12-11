@@ -7,7 +7,72 @@
             <form  method="POST" action="logout">
                 <button type="submit">Logout</button>
             </form>
-        </body>
-        </html>
-        
+            <h2> search</h2>
+            <input type="text" id="searchInput" placeholder="search for movies and shows">
+            <button id="searchBtn">Search</button>
+            <ul id="movieList"></ul>
+        <script>
+            document.getElementById('searchInput').addEventListener('input', function(){
+                let inputValue = this.value;
+                this.value = inputValue.replace(/\b\w/g, function(char){
+                    return char.toUpperCase();
+                });
+            });
+             document.getElementById('searchBtn').addEventListener('click', function(){
+                const query = document.getElementById('searchInput').value.trim();
+                if (query){
+                    searchMovies(query);
+
+                }else{
+                    alert('please search tearm');
+                }
+                
+             });
+            async function searchMovies (query){
+                const url = 'https://imdb188.p.rapidapi.com/api/v1/getPopularMovies';
+const options = {
+	method: 'POST',
+	headers: {
+		'x-rapidapi-key':'e4910182a9mshef09ddac2e6df6dp1df58bjsn930b55edc97c',
+		'x-rapidapi-host': 'imdb188.p.rapidapi.com',
+		'Content-Type': 'application/json'
+	}
+};
+try {
+	const response = await fetch(url, options);
+
+    if(!response.ok){
+        throw new Error(`http status: ${response.status} `);
+    }
+	const result = await response.json();
+    console.log(result);
+    const movies = result?.data?.list || [];
+    const filteredMovies = movies.filter(movie =>
+    movie.title?.titleText?.text.toLowerCase().includes(query.toLowerCase())
+    );
+    displayMovies(filteredMovies);
+
+    
+    
+
+}catch(error){
+    console.error('error getting data:', error);
+} 
+}
+function displayMovies(movies){
+    const movieList = document.getElementById('movieList');
+    movieList.innerHTML = '';
+    if (movies.length === 0){
+        movieList.innerHTML = '<li> no movies found<li>';
+            return;
+    }
+    movies.forEach(movie => {
+       const li = document.createElement('li');
+        li.textContent = movie.title?.titleText?.text || 'unknown';
+        movieList.appendChild(li);
+    });
+}
+        </script>
+         </body>
+         </html>
     
