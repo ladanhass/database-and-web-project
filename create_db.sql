@@ -1,13 +1,14 @@
 
 
 
+CREATE TABLE IF NOT EXISTS movie(id INT AUTO_INCREMENT,name VARCHAR(50),price DECIMAL(5, 2) unsigned,PRIMARY KEY(id));
 
 CREATE DATABASE IF NOT EXISTS database_coursework;
 USE database_coursework;
 
 
-CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'root1234';
-GRANT ALL PRIVILEGES ON database_coursework.* TO 'root'@'localhost';
+CREATE USER IF NOT EXISTS 'database_app'@'localhost' IDENTIFIED BY 'myPassword';
+GRANT ALL PRIVILEGES ON database_coursework.* TO 'database_app'@'localhost';
 
 
 CREATE  TABLE IF NOT EXISTS users (

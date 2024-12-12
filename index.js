@@ -8,7 +8,7 @@ const expressSanitizer = require("express-sanitizer");
 require("dotenv").config();
 //port and initialise express
 const app = express();
-const port = 8096;
+const serverPort = 8096;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -49,4 +49,6 @@ app.use("/users", usersRoutes);
 const movieRoutes = require("./routes/movie");
 app.use("/movie", movieRoutes);
 //starts server
-app.listen(port, () => console.log(`Node app listening on port ${port}!`));
+app.listen(serverPort, () =>
+  console.log(`Node app listening on port ${serverPort}!`)
+);
