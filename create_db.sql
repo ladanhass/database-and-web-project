@@ -1,10 +1,19 @@
 
 
 
-CREATE TABLE IF NOT EXISTS movie(id INT AUTO_INCREMENT,name VARCHAR(50),price DECIMAL(5, 2) unsigned,PRIMARY KEY(id));
 
 CREATE DATABASE IF NOT EXISTS database_coursework;
 USE database_coursework;
+
+
+
+CREATE TABLE IF NOT EXISTS movie(
+    id INT AUTO_INCREMENT,
+    name VARCHAR(50),
+    price DECIMAL(5, 2) unsigned,
+    PRIMARY KEY(id));
+
+
 
 
 CREATE USER IF NOT EXISTS 'database_app'@'localhost' IDENTIFIED BY 'myPassword';

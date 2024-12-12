@@ -1,4 +1,4 @@
-USE database_coursework;
+
 
 INSERT INTO movie(name, price)VALUES('Loin king', 3.25), ('The Shawshank Redemption', 3.99), 
 ('The Godfather', 3.99), ('The Dark Knight', 4.99), ('The Godfather Part II', 3.99),
